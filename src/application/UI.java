@@ -50,33 +50,42 @@ public class UI {
             throw new InputMismatchException("Error reading ChessPosition. Valid values are from: a1 to h8");
         }
     }
-    public static void printMatch(ChessMatch chessMatch, List<ChessPiece> caputredChessPieces){
+
+    public static void printMatch(ChessMatch chessMatch, List<ChessPiece> caputredChessPieces) {
         printBoard(chessMatch.getPieces());
         System.out.println();
         printCapturedPieces(caputredChessPieces);
         System.out.println();
         System.out.println("Turn: " + chessMatch.getTurn());
-        System.out.println("Waiting player: " + chessMatch.getCurrentPlayer());
-        if(chessMatch.isCheck()){
-            System.out.println("CHECK!");
+        if (!chessMatch.isCheckmate()) {
+            System.out.println("Waiting player: " + chessMatch.getCurrentPlayer());
+            if (chessMatch.isCheck()) {
+                System.out.println("CHECK!");
+            }
+        } else {
+            System.out.println("CHECKMATE!");
+            System.out.println("Winner: " + chessMatch.getCurrentPlayer());
+
         }
+
     }
 
     public static void printBoard(ChessPiece[][] chessPieces) {
         for (int i = 0; i < chessPieces.length; i++) {
             System.out.print((8 - i) + " ");
             for (int j = 0; j < chessPieces.length; j++) {
-                printPiece(chessPieces[i][j],false);
+                printPiece(chessPieces[i][j], false);
             }
             System.out.println();
         }
         System.out.println("  a b c d e f g h");
     }
+
     public static void printBoard(ChessPiece[][] chessPieces, boolean[][] possibleMoves) {
         for (int i = 0; i < chessPieces.length; i++) {
             System.out.print((8 - i) + " ");
             for (int j = 0; j < chessPieces.length; j++) {
-                printPiece(chessPieces[i][j],possibleMoves[i][j]);
+                printPiece(chessPieces[i][j], possibleMoves[i][j]);
             }
             System.out.println();
         }
@@ -98,9 +107,12 @@ public class UI {
         }
         System.out.print(" ");
     }
-    private static void printCapturedPieces(List<ChessPiece> capturedChessPieces){
-        List<ChessPiece> whiteChessPieces = capturedChessPieces.stream().filter(x -> x.getColor() == Color.WHITE).collect(Collectors.toList());
-        List<ChessPiece> blackChessPieces = capturedChessPieces.stream().filter(x -> x.getColor() == Color.BLACK).collect(Collectors.toList());
+
+    private static void printCapturedPieces(List<ChessPiece> capturedChessPieces) {
+        List<ChessPiece> whiteChessPieces = capturedChessPieces.stream().filter(x -> x.getColor() == Color.WHITE)
+                .collect(Collectors.toList());
+        List<ChessPiece> blackChessPieces = capturedChessPieces.stream().filter(x -> x.getColor() == Color.BLACK)
+                .collect(Collectors.toList());
         System.out.println("Captured pieces: ");
         System.out.print("White: ");
         System.out.print(ANSI_WHITE);
