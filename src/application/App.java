@@ -18,19 +18,24 @@ public class App {
         while (!chessMatch.isCheckmate()) {
             try {
                 UI.clearScreen();
-                UI.printMatch(chessMatch,capturedChessPieces);
+                UI.printMatch(chessMatch, capturedChessPieces);
                 System.out.println();
                 System.out.print("Source: ");
                 ChessPosition source = UI.readChessPosition(scanner);
                 boolean[][] possibleMoves = chessMatch.possibleMoves(source);
                 UI.clearScreen();
-                UI.printBoard(chessMatch.getPieces(),possibleMoves);
+                UI.printBoard(chessMatch.getPieces(), possibleMoves);
                 System.out.println();
                 System.out.print("Target: ");
                 ChessPosition target = UI.readChessPosition(scanner);
                 ChessPiece capturedPiece = chessMatch.perfomeChessMove(source, target);
                 if (capturedPiece != null) {
                     capturedChessPieces.add(capturedPiece);
+                }
+                if (chessMatch.getPrometed() != null) {
+                    System.out.print("Enter piece for promotion: (B/N/R/Q): ");
+                    String typePiece = scanner.nextLine();
+                    chessMatch.replacePrometedPiece(typePiece);
                 }
             } catch (ChessException exception) {
                 System.out.println(exception.getMessage());
@@ -43,7 +48,7 @@ public class App {
 
         }
         UI.clearScreen();
-        UI.printMatch(chessMatch,capturedChessPieces);
+        UI.printMatch(chessMatch, capturedChessPieces);
 
     }
 }
